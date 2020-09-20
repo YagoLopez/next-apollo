@@ -1,6 +1,5 @@
 import withApollo from '../lib/apollo'
 import { BookInfo } from "../components/BookInfo";
-// import { withApollo } from "@apollo/client/react/hoc";
 
 const Index = ({ data }) => {
   return (
