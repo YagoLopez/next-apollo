@@ -1,20 +1,14 @@
-import { ApolloProvider } from "@apollo/react-hooks";
-import ApolloClient, { gql } from "apollo-boost";
+import withApollo from '../lib/apollo'
 import { BookInfo } from "../components/BookInfo";
+// import { withApollo } from "@apollo/client/react/hoc";
 
 const Index = ({ data }) => {
-  const client = new ApolloClient({
-    uri: "/api/graphql",
-  });
-
   return (
-    <ApolloProvider client={client}>
-      <div>
-        <h1>NextJS GraphQL Apollo App</h1>
-        <BookInfo />
-      </div>
-    </ApolloProvider>
+    <div>
+      <h1>NextJS GraphQL Apollo App</h1>
+      <BookInfo />
+    </div>
   );
 };
 
-export default Index;
+export default withApollo({ ssr: true })(Index);
