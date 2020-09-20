@@ -1,34 +1,40 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 
-let book = {
-  name: "The Hungarian Sausage",
-  author: "Ben Grunfeld",
-};
+let recipes = [
+    { id: 1, title: "Recipe 1", averageRating: 10 },
+    { id: 2, title: "Recipe 2", averageRating: 20 },
+    { id: 3, title: "Recipe 3", averageRating: 30 }
+  ]
 
 const typeDefs = gql`
-  type Book {
-    name: String
-    author: String
+  type Recipe {
+    id: ID!
+    title: String!
+    averageRating: Int
   }
+  
   type Query {
-    book: Book
+    recipes: [Recipe]
   }
+  
   type Mutation {
-    updateBook(name: String!, author: String!): Book
+    removeRecipe(id: ID): Recipe
   }
+
 `;
 
 const resolvers = {
   Query: {
-    book: () => book,
+    recipes: () => recipes,
   },
 
   Mutation: {
-    updateBook: (root, args) => {
-      book.name = args.name;
-      book.author = args.author;
-      return book;
-    },
+    removeRecipe: (parent, { id }, context) => {
+      recipes = recipes.filter((recipe) => {
+        return +recipe.id !== +id
+      })
+      console.log('recipes', recipes)
+    }
   },
 };
 
