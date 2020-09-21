@@ -1,3 +1,8 @@
+// todo: example with knex lib and sqlite in a new branch
+// todo: add prisma and crud example
+// todo: study pooling in official docs to achieve realtime
+// todo: try with pouchdb for realtime
+
 import withApollo from '../lib/apolloClient'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
@@ -15,12 +20,8 @@ const GET_RECIPES = gql`
 `
 
 const ADD_RECIPE = gql`
-  mutation {
-    addRecipe(id: 99, title: "recipe 99") {
-      id
-      title
-      averageRating
-    }
+  mutation addRecipe($title: String, $averageRating: Int = 0) {
+    addRecipe(title: $title, averageRating: $averageRating)
   }
 `
 
@@ -36,18 +37,25 @@ const REMOVE_RECIPE = gql`
 
 const Index = () => {
 
-  const { loading, error, data, fetchMore } = useQuery(GET_RECIPES, {
-    variables: { skip: 0, first: RECIPES_PER_PAGE },
-    notifyOnNetworkStatusChange: true
-  });
+  const onCompleted = (result: object) => {
+    console.log('mutation completed', result)
+  }
 
-  // const [onAddRecipe] = useMutation(ADD_RECIPE, {refetchQueries: [{query: GET_RECIPES}]});
-  const [ removeRecipe ] = useMutation(REMOVE_RECIPE);
+  const { loading, error, data, fetchMore } = useQuery(GET_RECIPES, {notifyOnNetworkStatusChange: true});
+  const [ addRecipe ] = useMutation(ADD_RECIPE, { onCompleted })
+  const [ removeRecipe ] = useMutation(REMOVE_RECIPE, { onCompleted })
+
+  const onAddRecipe = (title: string, averageRating?: number) => {
+    addRecipe({
+      variables: { title, averageRating },
+      refetchQueries: [{query: GET_RECIPES}],
+    })
+  }
 
   const onRemoveRecipie = (recipeId: number) => {
     removeRecipe({
       variables: { id: recipeId },
-      refetchQueries: [{query: GET_RECIPES}]
+      refetchQueries: [{query: GET_RECIPES}],
     })
   }
 
@@ -60,18 +68,22 @@ const Index = () => {
         {
           data.recipes.map((recipe, index) => {
             return (
-              <p key={index}>
-                Recipe:&nbsp;
-                <span>{recipe.title}</span> | Id: <span>{recipe.id}</span>&nbsp;
-                <span><button onClick={() => onRemoveRecipie(recipe.id)}>Remove</button></span>
-              </p>
+              <div key={index} className="recipe">
+                <span>
+                  <div>{recipe.title}</div>
+                  <div>id: {recipe.id}</div>
+                </span>
+                <span className="btnRemove">
+                  <button onClick={() => onRemoveRecipie(recipe.id)}>Remove</button>
+                </span>
+              </div>
             )
           })
         }
-        {/*<p><button onClick={() => onAddRecipe()}>Add Recipe</button></p>*/}
+        <p><button onClick={() => onAddRecipe(`Recipe ${Date.now()}`)}>Add Recipe</button></p>
         <p>
           <Link href="/api/graphql">
-            <a>/api/graphql</a>
+            <a>/api/graphql ➡</a>
           </Link>
         </p>
       </div>

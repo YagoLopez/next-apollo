@@ -7,10 +7,23 @@ body {
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+  color: dodgerblue;
 }
 
 * {
   box-sizing: border-box;
+}
+
+.recipe {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: lavender;
+  padding: 1em;
+  margin: 0.6em;
+  border-radius: 0.5em;
+}
+
+.btnRemove {
+  padding: 0.5em;
 }

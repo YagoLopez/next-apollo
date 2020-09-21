@@ -20,20 +20,23 @@ const typeDefs = gql`
   
   type Mutation {
     removeRecipe(id: ID): Recipe
+    addRecipe(title: String, averageRating: Int): ID
   }
 `;
 
 const resolvers = {
   Query: {
-    recipes: (_, __, context) => context.recipes,
+    recipes: (_, __, ctx) => ctx.recipes,
   },
 
   Mutation: {
-    removeRecipe: (_, { id }, context) => {
-      console.log('id', id)
-      return _remove(context.recipes, (recipe) => recipe.id === +id)[0]
+    removeRecipe: (_, { id }, ctx) => _remove(ctx.recipes, (recipe) => recipe.id === +id)[0],
+    addRecipe: (parent, { title, averageRating }, ctx) => {
+      const id = Date.now()
+      ctx.recipes.push({ id, title, averageRating })
+      return id
     }
-  },
+  }
 };
 
 const server = new ApolloServer({
@@ -44,7 +47,7 @@ const server = new ApolloServer({
   context: { recipes }
 });
 
-const handler = server.createHandler({ path: "/api/graphql" });
+const handler = server.createHandler({ path: '/api/graphql' });
 
 export const config = {
   api: {
