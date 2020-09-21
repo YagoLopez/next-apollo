@@ -40,7 +40,9 @@ const Index = () => {
   });
 
   // const [onAddRecipe] = useMutation(ADD_RECIPE, {refetchQueries: [{query: GET_RECIPES}]});
-  const [onRemoveRecipe] = useMutation(REMOVE_RECIPE, {refetchQueries: [{query: GET_RECIPES}]});
+  const [onRemoveRecipe] = useMutation(REMOVE_RECIPE, {
+    refetchQueries: [{query: GET_RECIPES}]
+  });
 
   if (loading) return <div>Loading...</div>
   if (error) return <pre>JSON.stringify(error, null, 2)</pre>
