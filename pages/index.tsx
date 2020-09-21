@@ -23,10 +23,11 @@ const ADD_RECIPE = gql`
 `
 
 const REMOVE_RECIPE = gql`
-  mutation{
-    removeRecipe(id: 1){
+  mutation {
+    removeRecipe(id: 1) {
       id
       title
+      averageRating
     }
   }
 `

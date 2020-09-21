@@ -1,4 +1,5 @@
 import { ApolloServer, gql } from "apollo-server-micro";
+import _remove from "lodash/remove"
 
 let recipes = [
     { id: 1, title: "Recipe 1", averageRating: 10 },
@@ -29,13 +30,7 @@ const resolvers = {
   },
 
   Mutation: {
-    removeRecipe: (_, { id }) => {
-      debugger
-      recipes = recipes.filter((recipe) => {
-        return recipe.id !== +id
-      })
-      console.log('recipes', recipes)
-    }
+    removeRecipe: (_, { id }) => _remove(recipes, (recipe) => recipe.id === +id)[0]
   },
 };
 
