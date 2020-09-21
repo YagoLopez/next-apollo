@@ -29,9 +29,10 @@ const resolvers = {
   },
 
   Mutation: {
-    removeRecipe: (parent, { id }, context) => {
+    removeRecipe: (_, { id }) => {
+      debugger
       recipes = recipes.filter((recipe) => {
-        return +recipe.id !== +id
+        return recipe.id !== +id
       })
       console.log('recipes', recipes)
     }
