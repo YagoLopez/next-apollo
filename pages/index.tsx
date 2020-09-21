@@ -15,16 +15,18 @@ const GET_RECIPES = gql`
 `
 
 const ADD_RECIPE = gql`
-  mutation{addRecipe(id: 99, title: "recipe 99"){
-    id
-    title
+  mutation {
+    addRecipe(id: 99, title: "recipe 99") {
+      id
+      title
+      averageRating
     }
   }
 `
 
 const REMOVE_RECIPE = gql`
-  mutation {
-    removeRecipe(id: 1) {
+  mutation removeRecipe($id: ID) {
+    removeRecipe(id: $id) {
       id
       title
       averageRating
@@ -40,12 +42,17 @@ const Index = () => {
   });
 
   // const [onAddRecipe] = useMutation(ADD_RECIPE, {refetchQueries: [{query: GET_RECIPES}]});
-  const [onRemoveRecipe] = useMutation(REMOVE_RECIPE, {
-    refetchQueries: [{query: GET_RECIPES}]
-  });
+  const [ removeRecipe ] = useMutation(REMOVE_RECIPE);
+
+  const onRemoveRecipie = (recipeId: number) => {
+    removeRecipe({
+      variables: { id: recipeId },
+      refetchQueries: [{query: GET_RECIPES}]
+    })
+  }
 
   if (loading) return <div>Loading...</div>
-  if (error) return <pre>JSON.stringify(error, null, 2)</pre>
+  if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
 
   if (data?.recipes) {
     return (
@@ -54,13 +61,14 @@ const Index = () => {
           data.recipes.map((recipe, index) => {
             return (
               <p key={index}>
-                Recipe: <span>{recipe.title}</span> | Id: <span>{recipe.id}</span>
+                Recipe:&nbsp;
+                <span>{recipe.title}</span> | Id: <span>{recipe.id}</span>&nbsp;
+                <span><button onClick={() => onRemoveRecipie(recipe.id)}>Remove</button></span>
               </p>
             )
           })
         }
         {/*<p><button onClick={() => onAddRecipe()}>Add Recipe</button></p>*/}
-        <p><button onClick={() => onRemoveRecipe()}>Remove Recipe id: 1</button></p>
         <p>
           <Link href="/api/graphql">
             <a>/api/graphql</a>

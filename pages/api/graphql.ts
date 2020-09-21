@@ -30,6 +30,7 @@ const resolvers = {
 
   Mutation: {
     removeRecipe: (_, { id }, context) => {
+      console.log('id', id)
       return _remove(context.recipes, (recipe) => recipe.id === +id)[0]
     }
   },
