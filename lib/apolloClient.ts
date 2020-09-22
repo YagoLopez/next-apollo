@@ -3,7 +3,7 @@ import ApolloClient, { InMemoryCache } from 'apollo-boost'
 
 const apolloClient = new ApolloClient({
   uri: "/api/graphql",
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 export default withApollo(apolloClient)

@@ -8,8 +8,6 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import Link from "next/link";
 
-const RECIPES_PER_PAGE = 10;
-
 const GET_RECIPES = gql`
   query {
     recipes{
