@@ -1,41 +1,43 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import _remove from "lodash/remove"
+import { v4 as uuidv4 } from 'uuid'
 
-const now = Date.now()
+const id1 = uuidv4()
+const id2 = uuidv4()
+const id3 = uuidv4()
 
-let recipes = [
-  { id: now, title: `Recipe ${now}`, averageRating: 10 },
-  { id: now + 1, title: `Recipe ${now + 1}`, averageRating: 20 },
-  { id: now + 2, title: `Recipe ${now + 2}`, averageRating: 30 }
+let items = [
+  { id: id1, text: `Item`},
+  { id: id2 + 1, text: `Item`},
+  { id: id3 + 2, text: `Item`}
 ]
 
 const typeDefs = gql`
-  type Recipe {
+  type Item {
     id: ID!
-    title: String!
-    averageRating: Int
+    text: String!
   }
   
   type Query {
-    recipes: [Recipe]
+    items: [Item]
   }
   
   type Mutation {
-    removeRecipe(id: ID): Recipe
-    addRecipe(title: String, averageRating: Int): ID
+    removeItem(id: ID): Item
+    addItem(text: String): ID
   }
 `;
 
 const resolvers = {
   Query: {
-    recipes: (_, __, ctx) => ctx.recipes,
+    items: (_, __, ctx) => ctx.items
   },
 
   Mutation: {
-    removeRecipe: (_, { id }, ctx) => _remove(ctx.recipes, (recipe) => recipe.id === +id)[0],
-    addRecipe: (parent, { title, averageRating }, ctx) => {
-      const id = Date.now()
-      ctx.recipes.push({ id, title, averageRating })
+    removeItem: (_, { id }, ctx) => _remove(ctx.items, (item) => item.id === id)[0],
+    addItem: (_, { text }, ctx) => {
+      const id = uuidv4()
+      ctx.items.push({ id, text })
       return id
     }
   }
@@ -46,7 +48,7 @@ const server = new ApolloServer({
   resolvers,
   playground: true,
   introspection: true,
-  context: (req, res) => ({ req, res, recipes })
+  context: (req, res) => ({ req, res, items })
 })
 
 const handler = server.createHandler({ path: '/api/graphql' });

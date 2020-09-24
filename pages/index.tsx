@@ -8,27 +8,26 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import Link from "next/link";
 
-const GET_RECIPES = gql`
+const GET_ITEMS = gql`
   query {
-    recipes{
+    items{
       id
-      title
+      text
     }
   }
 `
 
-const ADD_RECIPE = gql`
-  mutation addRecipe($title: String, $averageRating: Int = 0) {
-    addRecipe(title: $title, averageRating: $averageRating)
+const ADD_ITEM = gql`
+  mutation addItem($text: String) {
+    addItem(text: $text)
   }
 `
 
-const REMOVE_RECIPE = gql`
-  mutation removeRecipe($id: ID) {
-    removeRecipe(id: $id) {
+const REMOVE_ITEM = gql`
+  mutation removeItem($id: ID) {
+    removeItem(id: $id) {
       id
-      title
-      averageRating
+      text
     }
   }
 `
@@ -39,45 +38,46 @@ const Index = () => {
     console.log('mutation completed', result)
   }
 
-  const { loading, error, data, fetchMore } = useQuery(GET_RECIPES, {notifyOnNetworkStatusChange: true});
-  const [ addRecipeMutation ] = useMutation(ADD_RECIPE, { onCompleted })
-  const [ removeRecipeMutation ] = useMutation(REMOVE_RECIPE, { onCompleted })
+  const { loading, error, data, fetchMore } = useQuery(GET_ITEMS, {notifyOnNetworkStatusChange: true});
+  const [ addItemMutation ] = useMutation(ADD_ITEM, { onCompleted })
+  const [ removeItemMutation ] = useMutation(REMOVE_ITEM, { onCompleted })
 
-  const onAddRecipe = (title: string, averageRating?: number) => {
-    addRecipeMutation({
-      variables: { title },
-      refetchQueries: [{query: GET_RECIPES}],
+  const onAddItem = (text: string) => {
+    addItemMutation({
+      variables: { text },
+      refetchQueries: [{query: GET_ITEMS}],
     })
   }
 
-  const onRemoveRecipie = (recipeId: number) => {
-    removeRecipeMutation({
-      variables: { id: recipeId },
-      refetchQueries: [{query: GET_RECIPES}],
+  const onRemoveItem = (itemId: number) => {
+    removeItemMutation({
+      variables: { id: itemId },
+      refetchQueries: [{query: GET_ITEMS}],
     })
   }
 
   if (loading) return <div>Loading...</div>
   if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
 
-  if (data?.recipes) {
+  if (data?.items) {
     return (
       <>
         {
-          data.recipes.map((recipe, index) => {
+          data.items.map((item, index) => {
             return (
-              <div key={index} className="recipe">
+              <div key={index} className="item">
                 <span>
-                  <div>{recipe.title}</div>
+                  <div>{item.text}</div>
+                  <div>{item.id}</div>
                 </span>
                 <span className="btnRemove">
-                  <button onClick={() => onRemoveRecipie(recipe.id)}>Remove</button>
+                  <button onClick={() => onRemoveItem(item.id)}>Remove</button>
                 </span>
               </div>
             )
           })
         }
-        <p><button onClick={() => onAddRecipe(`Recipe ${Date.now()}`)}>Add Recipe</button></p>
+        <p><button onClick={() => onAddItem('Item')}>Add Item</button></p>
         <p>
           <Link href="/api/graphql">
             <a>/api/graphql ➡</a>

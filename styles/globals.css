@@ -14,7 +14,7 @@ a {
   box-sizing: border-box;
 }
 
-.recipe {
+.item {
   display: flex;
   align-items: center;
   justify-content: space-between;
