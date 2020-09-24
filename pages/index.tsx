@@ -40,18 +40,18 @@ const Index = () => {
   }
 
   const { loading, error, data, fetchMore } = useQuery(GET_RECIPES, {notifyOnNetworkStatusChange: true});
-  const [ addRecipe ] = useMutation(ADD_RECIPE, { onCompleted })
-  const [ removeRecipe ] = useMutation(REMOVE_RECIPE, { onCompleted })
+  const [ addRecipeMutation ] = useMutation(ADD_RECIPE, { onCompleted })
+  const [ removeRecipeMutation ] = useMutation(REMOVE_RECIPE, { onCompleted })
 
   const onAddRecipe = (title: string, averageRating?: number) => {
-    addRecipe({
-      variables: { title, averageRating },
+    addRecipeMutation({
+      variables: { title },
       refetchQueries: [{query: GET_RECIPES}],
     })
   }
 
   const onRemoveRecipie = (recipeId: number) => {
-    removeRecipe({
+    removeRecipeMutation({
       variables: { id: recipeId },
       refetchQueries: [{query: GET_RECIPES}],
     })
@@ -69,7 +69,6 @@ const Index = () => {
               <div key={index} className="recipe">
                 <span>
                   <div>{recipe.title}</div>
-                  <div>id: {recipe.id}</div>
                 </span>
                 <span className="btnRemove">
                   <button onClick={() => onRemoveRecipie(recipe.id)}>Remove</button>

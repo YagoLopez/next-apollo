@@ -1,10 +1,12 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import _remove from "lodash/remove"
 
+const now = Date.now()
+
 let recipes = [
-  { id: 1, title: "Recipe 1", averageRating: 10 },
-  { id: 2, title: "Recipe 2", averageRating: 20 },
-  { id: 3, title: "Recipe 3", averageRating: 30 }
+  { id: now, title: `Recipe ${now}`, averageRating: 10 },
+  { id: now + 1, title: `Recipe ${now + 1}`, averageRating: 20 },
+  { id: now + 2, title: `Recipe ${now + 2}`, averageRating: 30 }
 ]
 
 const typeDefs = gql`
@@ -44,8 +46,8 @@ const server = new ApolloServer({
   resolvers,
   playground: true,
   introspection: true,
-  context: { recipes }
-});
+  context: (req, res) => ({ req, res, recipes })
+})
 
 const handler = server.createHandler({ path: '/api/graphql' });
 
