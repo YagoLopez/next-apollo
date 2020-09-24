@@ -62,7 +62,7 @@ const Index = () => {
 
   if (data?.recipes) {
     return (
-      <div>
+      <>
         {
           data.recipes.map((recipe, index) => {
             return (
@@ -84,7 +84,7 @@ const Index = () => {
             <a>/api/graphql ➡</a>
           </Link>
         </p>
-      </div>
+      </>
     );
   }
 }
