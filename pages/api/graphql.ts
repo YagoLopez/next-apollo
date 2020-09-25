@@ -30,7 +30,7 @@ console.log('fullDbPath2', fullDbPath2)
 
 const db = require('knex')({
   client: 'sqlite3',
-  connection: { filename: fullDbpath },
+  connection: { filename: '../../data.db' },
   useNullAsDefault: true
 });
 
