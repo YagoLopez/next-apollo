@@ -1,22 +1,50 @@
 import { ApolloServer, gql } from "apollo-server-micro";
+const { PHASE_PRODUCTION_BUILD } = require('next/constants')
+
+declare const process
+let filename
+
+if (process.env.NODE_ENV === 'production') {
+  // filename = './data.db'
+  const db = require('knex')({
+    client: 'sqlite3',
+    connection: { filename: './data.db' },
+    useNullAsDefault: true
+  });
+
+  // Create a table
+  // db.schema
+  //   .createTable('items', table => {
+  //     table.increments('id');
+  //     table.string('text');
+  //   })
+  //   // Then query the table...
+  //   .then(() =>
+  //     db('items').insert({ text: 'Item' })
+  //   ).catch((error) => console.error(error))
+
+}
+
+if (process.env.NODE_ENV === 'development') {
+  // filename = './public/data.db'
+  const db = require('knex')({
+    client: 'sqlite3',
+    connection: { filename: './public/data.db' },
+    useNullAsDefault: true
+  });
+
+}
+
+console.log('process.nove.NODE_ENV', process.env.NODE_ENV)
+console.log('db path', filename)
 
 const db = require('knex')({
   client: 'sqlite3',
-  connection: {filename: './data.db'},
+  connection: { filename },
   useNullAsDefault: true
 });
 
 
-// Create a table
-// knex.schema
-//   .createTable('items', table => {
-//     table.increments('id');
-//     table.string('text');
-//   })
-//   // Then query the table...
-//   .then(() =>
-//     knex('items').insert({ text: 'Item' })
-//   ).catch((error) => console.error(error))
 
 
 const typeDefs = gql`
