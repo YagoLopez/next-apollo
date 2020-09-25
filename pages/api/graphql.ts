@@ -24,7 +24,7 @@ console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 
 const db = require('knex')({
   client: 'sqlite3',
-  connection: { filename: ':memory:' },
+  connection: { filename: 'data.db' },
   useNullAsDefault: true
 });
 

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "prebuild": "node copydb.js",
-    "dev": "node databasetest.js && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },

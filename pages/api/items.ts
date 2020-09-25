@@ -3,7 +3,7 @@ const { open } = require('sqlite');
 
 export default async function Items (req, res) {
   const db = await open({
-    filename: './data.db',
+    filename: ':memory:',
     driver: sqlite3.Database
   })
 
