@@ -5,7 +5,7 @@
   "scripts": {
     "prebuild": "node copydb.js",
     "dev": "next dev",
-    "build": "next build",
+    "build": "node getpath.js && next build",
     "start": "next start"
   },
   "dependencies": {
