@@ -1,58 +1,46 @@
 import { ApolloServer, gql } from "apollo-server-micro";
-const { PHASE_PRODUCTION_BUILD } = require('next/constants')
+// const { PHASE_PRODUCTION_BUILD } = require('next/constants')
+// var db = new sqlite3.Database( path.resolve(__dirname, 'db.sqlite') );
+const path = require('path')
+const fullDbpath = path.resolve('data.db')
+let filename
+
+console.log('dirname', __dirname)
+console.log('filename', __filename)
+console.log('fullDbPath', fullDbpath)
+console.log('process.cwd()', process.cwd())
 
 declare const process
 
-/*
 if (process.env.NODE_ENV === 'production') {
-  filename = './data2.db'
-  db = require('knex')({
-    client: 'sqlite3',
-    connection: { filename },
-    useNullAsDefault: true
-  });
-
-  // Create a table
-  db.schema
-    .createTable('items', table => {
-      table.increments('id');
-      table.string('text');
-    })
-    // Then query the table...
-    // .then(() =>
-    //   db('items').insert({ text: 'Item' })
-    // ).catch((error) => console.error(error))
-
+  filename = './_next/static/data.db'
 }
 
 if (process.env.NODE_ENV === 'development') {
   filename = './data.db'
-  db = require('knex')({
-    client: 'sqlite3',
-    connection: { filename },
-    useNullAsDefault: true
-  });
-  // Create a table
-  db.schema
-    .createTable('items', table => {
-      table.increments('id');
-      table.string('text');
-    })
-    // Then query the table...
-    // .then(() =>
-    //   db('items').insert({ text: 'Item' })
-    // ).catch((error) => console.error(error))
-
 }
-*/
 
 console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 
 const db = require('knex')({
   client: 'sqlite3',
-  connection: { filename: './data.db' },
+  connection: { filename: 'data.db' },
   useNullAsDefault: true
 });
+
+// Create a table
+db.schema
+  .createTable('items', table => {
+    table.increments('id');
+    table.string('text');
+  })
+// Then query the table...
+.then((data) => {
+    // console.log('db', db)
+    console.log('data', data)
+    // db('items').insert({text: 'Item'})
+  }
+).catch((error) => console.error(error))
 
 
 const typeDefs = gql`
