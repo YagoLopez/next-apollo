@@ -28,25 +28,30 @@ console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 const fullDbPath2 = path.join(process.cwd(), path.sep + 'data.db')
 console.log('fullDbPath2', fullDbPath2)
 
-const db = require('knex')({
-  client: 'sqlite3',
-  connection: { filename: 'data.db' },
-  useNullAsDefault: true
+const db = require("knex")({
+  client: "pg",
+  connection: {
+    host: "ec2-54-247-79-178.eu-west-1.compute.amazonaws.com",
+    user: "vniyjodlqouigi",
+    password: "ea694508a7a30456653341727a9bc3ee7aa1e55bc89a0c808d49d283e43a9554",
+    database: "d4c5jva0v72hpk",
+    ssl: { rejectUnauthorized: false }
+  }
 });
 
 // Create a table
-db.schema
-  .createTable('items', table => {
-    table.increments('id');
-    table.string('text');
-  })
-// Then query the table...
-.then((data) => {
-    // console.log('db', db)
-    console.log('data', data)
-    // db('items').insert({text: 'Item'})
-  }
-).catch((error) => console.error(error))
+// db.schema
+//   .createTable('items', table => {
+//     table.increments('id');
+//     table.string('text');
+//   })
+// // Then query the table...
+// .then((data) => {
+//     // console.log('db', db)
+//     console.log('data', data)
+//     // db('items').insert({text: 'Item'})
+//   }
+// ).catch((error) => console.error(error))
 
 
 const typeDefs = gql`
