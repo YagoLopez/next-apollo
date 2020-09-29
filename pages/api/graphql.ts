@@ -73,7 +73,8 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     items: async (_, __, { db }) => {
-      return await db.select('*').from('items')
+      // return await db.select('*').from('items')
+      return []
 
     }
   },
