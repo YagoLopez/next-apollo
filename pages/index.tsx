@@ -13,6 +13,7 @@ const GET_ITEMS = gql`
     items{
       id
       text
+      __typename
     }
   }
 `
