@@ -41,20 +41,6 @@ const db = require("knex")({
   }
 });
 
-// Create a table
-// db.schema
-//   .createTable('items', table => {
-//     table.increments('id');
-//     table.string('text');
-//   })
-// // Then query the table...
-// .then((data) => {
-//     // console.log('db', db)
-//     console.log('data', data)
-//     // db('items').insert({text: 'Item'})
-//   }
-// ).catch((error) => console.error(error))
-
 
 const typeDefs = gql`
   type Item {
@@ -84,11 +70,6 @@ const resolvers = {
         },
         {
           "id": 3,
-          "text": "Item",
-          "__typename": "Item"
-        },
-        {
-          "id": 5,
           "text": "Item",
           "__typename": "Item"
         }
