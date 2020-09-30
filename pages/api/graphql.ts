@@ -28,25 +28,27 @@ console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 const fullDbPath2 = path.join(process.cwd(), path.sep + 'data.db')
 console.log('fullDbPath2', fullDbPath2)
 
-const db = require('knex')({
-  client: 'sqlite3',
-  connection: { filename: 'data.db' },
-  useNullAsDefault: true
-});
+const db = null
+
+// const db = require('knex')({
+//   client: 'sqlite3',
+//   connection: { filename: 'data.db' },
+//   useNullAsDefault: true
+// });
 
 // Create a table
-db.schema
-  .createTable('items', table => {
-    table.increments('id');
-    table.string('text');
-  })
-// Then query the table...
-.then((data) => {
-    // console.log('db', db)
-    console.log('data', data)
-    // db('items').insert({text: 'Item'})
-  }
-).catch((error) => console.error(error))
+// db.schema
+//   .createTable('items', table => {
+//     table.increments('id');
+//     table.string('text');
+//   })
+// // Then query the table...
+// .then((data) => {
+//     // console.log('db', db)
+//     console.log('data', data)
+//     // db('items').insert({text: 'Item'})
+//   }
+// ).catch((error) => console.error(error))
 
 
 const typeDefs = gql`
@@ -68,18 +70,21 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     items: (_, __, { db }) => {
-      return db.select('*').from('items')
+      // return db.select('*').from('items')
+      return []
     }
   },
 
   Mutation: {
     removeItem: async (_, { id }, { db }) => {
-      const removed_rows = await db('items').where({ id }).del()
-      return id
+      // const removed_rows = await db('items').where({ id }).del()
+      // return id
+      return "1"
     },
     addItem: async (_, { text }, { db }) => {
-      const idList: number[] = await db('items').insert({text: 'Item'}).returning('id')
-      return { id: idList[0], text }
+      // const idList: number[] = await db('items').insert({text: 'Item'}).returning('id')
+      // return { id: idList[0], text }
+      return { id: "1", text: "cccc" }
     }
   }
 };
