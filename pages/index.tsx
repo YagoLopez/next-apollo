@@ -27,7 +27,7 @@ const ADD_ITEM = gql`
 `
 
 const REMOVE_ITEM = gql`
-  mutation removeItem($id: ID) {
+  mutation removeItem($id: Int) {
     removeItem(id: $id)
   }
 `

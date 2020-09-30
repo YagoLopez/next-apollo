@@ -56,7 +56,7 @@ const db = require("knex")({
 
 const typeDefs = gql`
   type Item {
-    id: ID!
+    id: Int!
     text: String!
   }
   
@@ -65,7 +65,7 @@ const typeDefs = gql`
   }
   
   type Mutation {
-    removeItem(id: ID): ID
+    removeItem(id: Int): Int
     addItem(text: String): Item
   }
 `;
@@ -73,8 +73,8 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     items: async (_, __, { db }) => {
-      // return await db.select('*').from('items')
-      return []
+      const result = await db.select('*').from('items')
+      return result
 
     }
   },
