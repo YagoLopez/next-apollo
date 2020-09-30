@@ -126,5 +126,5 @@ export const config = {
 };
 
 export default cors(handler);
-
+// export default handler;
 // module.exports = cors((req, res) => req.method === 'OPTIONS' ? res.end() : handler(req, res))
