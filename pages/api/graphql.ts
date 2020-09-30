@@ -1,34 +1,11 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 // const { PHASE_PRODUCTION_BUILD } = require('next/constants')
-// var db = new sqlite3.Database( path.resolve(__dirname, 'db.sqlite') );
-const path = require('path')
-const fullDbpath = path.resolve('data.db')
 
-let filename
-console.log('dirname', __dirname)
-console.log('filename', __filename)
-console.log('fullDbPath', fullDbpath)
-console.log('process.cwd()', process.cwd())
-console.log('resolve', path.resolve('.'))
+declare var global
+const db = global.db
+console.log('global.test', global.test)
+// console.log('global.db', global.db)
 
-
-declare const process
-
-if (process.env.NODE_ENV === 'production') {
-  filename = './_next/static/data.db'
-}
-
-if (process.env.NODE_ENV === 'development') {
-  filename = './data.db'
-}
-
-console.log('process.env.NODE_ENV', process.env.NODE_ENV)
-
-
-const fullDbPath2 = path.join(process.cwd(), path.sep + 'data.db')
-console.log('fullDbPath2', fullDbPath2)
-
-const db = null
 
 // const db = require('knex')({
 //   client: 'sqlite3',
@@ -53,8 +30,8 @@ const db = null
 
 const typeDefs = gql`
   type Item {
-    id: ID!
-    text: String!
+    id: Int
+    text: String
   }
   
   type Query {
@@ -62,7 +39,7 @@ const typeDefs = gql`
   }
   
   type Mutation {
-    removeItem(id: ID): ID
+    removeItem(id: Int): Int
     addItem(text: String): Item
   }
 `;
@@ -70,21 +47,18 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     items: (_, __, { db }) => {
-      // return db.select('*').from('items')
-      return []
+      return db.select('*').from('items')
     }
   },
 
   Mutation: {
     removeItem: async (_, { id }, { db }) => {
-      // const removed_rows = await db('items').where({ id }).del()
-      // return id
-      return "1"
+      const removed_rows = await db('items').where({ id }).del()
+      return id
     },
     addItem: async (_, { text }, { db }) => {
-      // const idList: number[] = await db('items').insert({text: 'Item'}).returning('id')
-      // return { id: idList[0], text }
-      return { id: "1", text: "cccc" }
+      const idList: number[] = await db('items').insert({text: 'Item'}).returning('id')
+      return { id: idList[0], text }
     }
   }
 };

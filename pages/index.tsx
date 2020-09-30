@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const GET_ITEMS = gql`
   query {
-    items{
+    items {
       id
       text
     }
@@ -27,10 +27,28 @@ const ADD_ITEM = gql`
 `
 
 const REMOVE_ITEM = gql`
-  mutation removeItem($id: ID) {
+  mutation removeItem($id: Int) {
     removeItem(id: $id)
   }
 `
+
+declare var global
+
+export async function getStaticProps(context) {
+
+  const db = require('knex')({
+    client: 'sqlite3',
+    connection: { filename: 'data.db' },
+    useNullAsDefault: true
+  });
+
+  global.test = 'test'
+  global.db = db
+
+  return {
+    props: {}, // will be passed to the page component as props
+  }
+}
 
 const Index = () => {
 
@@ -88,4 +106,4 @@ const Index = () => {
   }
 }
 
-export default withApollo({ ssr: true })(Index);
+export default withApollo({ ssr: false })(Index);
