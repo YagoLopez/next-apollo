@@ -16,6 +16,17 @@ const typeDefs = gql`
   }
 `;
 
+const db = require("knex")({
+  client: "pg",
+  connection: {
+    host: "ec2-54-247-79-178.eu-west-1.compute.amazonaws.com",
+    user: "vniyjodlqouigi",
+    password: "ea694508a7a30456653341727a9bc3ee7aa1e55bc89a0c808d49d283e43a9554",
+    database: "d4c5jva0v72hpk",
+    ssl: { rejectUnauthorized: false }
+  }
+});
+
 const resolvers = {
   Query: {
     items: async (_, __) => {
