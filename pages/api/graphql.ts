@@ -62,18 +62,19 @@ const resolvers = {
   Query: {
     items: async (_, __, { db }) => {
       // const result = await db.select('*').from('items')
-      return [
-        {
-          "id": 1,
-          "text": "Item",
-          "__typename": "Item"
-        },
-        {
-          "id": 3,
-          "text": "Item",
-          "__typename": "Item"
-        }
-      ]
+      // return [
+      //   {
+      //     "id": 1,
+      //     "text": "Item",
+      //     "__typename": "Item"
+      //   },
+      //   {
+      //     "id": 3,
+      //     "text": "Item",
+      //     "__typename": "Item"
+      //   }
+      // ]
+      return []
 
     }
   },
