@@ -42,6 +42,21 @@ export async function getStaticProps(context) {
     useNullAsDefault: true
   });
 
+  // Create a table
+  db.schema
+    .createTable('items', table => {
+      table.increments('id');
+      table.string('text');
+    })
+  // Then query the table...
+  .then((data) => {
+      // console.log('db', db)
+      console.log('data', data)
+      // db('items').insert({text: 'Item'})
+    }
+  ).catch((error) => console.error(error))
+
+
   global.test = 'test'
   global.db = db
 
