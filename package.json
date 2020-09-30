@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prebuild": "node copydb.js",
     "dev": "next dev",
-    "build": "node getpath.js && next build",
+    "build": "next build",
     "start": "next start"
   },
   "dependencies": {

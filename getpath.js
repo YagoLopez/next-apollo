@@ -1,3 +1,6 @@
+// Utilities to Get file path in prod and dev
+// This could be useful in the future
+
 // const { PHASE_PRODUCTION_BUILD } = require('next/constants')
 // var db = new sqlite3.Database( path.resolve(__dirname, 'db.sqlite') );
 const path = require('path')
