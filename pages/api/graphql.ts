@@ -1,21 +1,9 @@
 import { ApolloServer, gql } from "apollo-server-micro";
-import _remove from "lodash/remove"
-import { v4 as uuidv4 } from 'uuid'
-
-const id1 = uuidv4()
-const id2 = uuidv4()
-const id3 = uuidv4()
-
-let items = [
-  { id: id1, text: `Item`},
-  { id: id2 + 1, text: `Item`},
-  { id: id3 + 2, text: `Item`}
-]
 
 const typeDefs = gql`
   type Item {
-    id: ID!
-    text: String!
+    id: Int
+    text: String
   }
   
   type Query {
@@ -23,22 +11,37 @@ const typeDefs = gql`
   }
   
   type Mutation {
-    removeItem(id: ID): Item
-    addItem(text: String): ID
+    removeItem(id: Int): Int
+    addItem(text: String): Item
   }
 `;
 
+const db = require("knex")({
+  client: "pg",
+  connection: {
+    host: "ec2-54-247-79-178.eu-west-1.compute.amazonaws.com",
+    user: "vniyjodlqouigi",
+    password: "ea694508a7a30456653341727a9bc3ee7aa1e55bc89a0c808d49d283e43a9554",
+    database: "d4c5jva0v72hpk",
+    ssl: { rejectUnauthorized: false }
+  }
+});
+
 const resolvers = {
   Query: {
-    items: (_, __, ctx) => ctx.items
+    items: async (_, __, { db }) => {
+      return  await db.select('*').from('items')
+    }
   },
 
   Mutation: {
-    removeItem: (_, { id }, ctx) => _remove(ctx.items, (item) => item.id === id)[0],
-    addItem: (_, { text }, ctx) => {
-      const id = uuidv4()
-      ctx.items.push({ id, text })
+    removeItem: async (_, { id }, { db }) => {
+      const removed_rows = await db('items').where({ id }).del()
       return id
+    },
+    addItem: async (_, { text }, { db }) => {
+      const idList: number[] = await db('items').insert({text}).returning('id')
+      return { id: idList[0], text }
     }
   }
 };
@@ -48,7 +51,7 @@ const server = new ApolloServer({
   resolvers,
   playground: true,
   introspection: true,
-  context: (req, res) => ({ req, res, items })
+  context: (req, res) => ({ req, res, db })
 })
 
 const handler = server.createHandler({ path: '/api/graphql' });

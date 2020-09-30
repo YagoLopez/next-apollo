@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const GET_ITEMS = gql`
   query {
-    items{
+    items {
       id
       text
     }
@@ -19,16 +19,16 @@ const GET_ITEMS = gql`
 
 const ADD_ITEM = gql`
   mutation addItem($text: String) {
-    addItem(text: $text)
+    addItem(text: $text) {
+      id
+      text
+    }
   }
 `
 
 const REMOVE_ITEM = gql`
-  mutation removeItem($id: ID) {
-    removeItem(id: $id) {
-      id
-      text
-    }
+  mutation removeItem($id: Int) {
+    removeItem(id: $id)
   }
 `
 

@@ -1,0 +1,9 @@
+
+-- UP
+CREATE TABLE Item (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    text TEXT
+);
+-- DOWN
+
+DROP TABLE Item;
