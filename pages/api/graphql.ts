@@ -30,7 +30,8 @@ const db = require("knex")({
 const resolvers = {
   Query: {
     items: async (_, __) => {
-      return []
+      const result = await db.select('*').from('items')
+      return result
     }
   },
 
