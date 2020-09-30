@@ -29,18 +29,19 @@ const db = require("knex")({
 
 const resolvers = {
   Query: {
-    items: async (_, __) => {
-      const result = await db.select('*').from('items')
-      return result
+    items: async (_, __, { db }) => {
+      return  await db.select('*').from('items')
     }
   },
 
   Mutation: {
-    removeItem: async (_, { id }) => {
-      return 3
+    removeItem: async (_, { id }, { db }) => {
+      const removed_rows = await db('items').where({ id }).del()
+      return id
     },
-    addItem: async (_, { text }) => {
-      return { id: 4, text: "Item" }
+    addItem: async (_, { text }, { db }) => {
+      const idList: number[] = await db('items').insert({text}).returning('id')
+      return { id: idList[0], text }
     }
   }
 };
@@ -50,7 +51,7 @@ const server = new ApolloServer({
   resolvers,
   playground: true,
   introspection: true,
-  context: (req, res) => ({ req, res })
+  context: (req, res) => ({ req, res, db })
 })
 
 const handler = server.createHandler({ path: '/api/graphql' });
