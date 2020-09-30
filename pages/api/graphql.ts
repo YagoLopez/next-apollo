@@ -1,4 +1,6 @@
+const cors = require('micro-cors')(); // highlight-line
 import { ApolloServer, gql } from "apollo-server-micro";
+
 // const { PHASE_PRODUCTION_BUILD } = require('next/constants')
 // var db = new sqlite3.Database( path.resolve(__dirname, 'db.sqlite') );
 const path = require('path')
@@ -73,8 +75,24 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     items: async (_, __, { db }) => {
-      const result = await db.select('*').from('items')
-      return result
+      // const result = await db.select('*').from('items')
+      return [
+        {
+          "id": 1,
+          "text": "Item",
+          "__typename": "Item"
+        },
+        {
+          "id": 3,
+          "text": "Item",
+          "__typename": "Item"
+        },
+        {
+          "id": 5,
+          "text": "Item",
+          "__typename": "Item"
+        }
+      ]
 
     }
   },
@@ -107,4 +125,6 @@ export const config = {
   },
 };
 
-export default handler;
+export default cors(handler);
+
+// module.exports = cors((req, res) => req.method === 'OPTIONS' ? res.end() : handler(req, res))
