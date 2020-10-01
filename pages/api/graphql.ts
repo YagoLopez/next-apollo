@@ -1,17 +1,13 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 // const { PHASE_PRODUCTION_BUILD } = require('next/constants')
 
-declare var global
-const db = global.db
-console.log('global.test', global.test)
-// console.log('global.db', global.db)
 
 
-// const db = require('knex')({
-//   client: 'sqlite3',
-//   connection: { filename: 'data.db' },
-//   useNullAsDefault: true
-// });
+const db = require('knex')({
+  client: 'sqlite3',
+  connection: { filename: './data.html' },
+  useNullAsDefault: true
+});
 
 // Create a table
 // db.schema
