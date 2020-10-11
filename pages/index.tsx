@@ -107,7 +107,7 @@ const Index = () => {
         }
         <p><button onClick={() => onAddItem('Item')}>Add Item</button></p>
         <p>
-          <Link href="/api/graphql">
+          <Link href="/api/graphql?query=query{items{id text}}">
             <a>/api/graphql ➡</a>
           </Link>
         </p>

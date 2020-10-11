@@ -5,7 +5,7 @@ import { ApolloServer, gql } from "apollo-server-micro";
 
 const db = require('knex')({
   client: 'sqlite3',
-  connection: { filename: './data.html' },
+  connection: { filename: './data.db' },
   useNullAsDefault: true
 });
 
